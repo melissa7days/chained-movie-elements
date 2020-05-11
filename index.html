@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en" style="overflow-x: hidden;">
+   <head>
+      <meta charset="utf-8">
+      <title>MovieComponent</title>
+      <base href="">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="icon" type="image/x-icon" href="favicon.ico">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+      <style>
+         @import url('https://fonts.googleapis.com/css?family=Oswald&display=swap');
+         @import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
+         * {
+         box-sizing: border-box;
+         }
+         form.example input[type=text] {
+         padding: 10px;
+         font-size: 17px;
+         border: 1px solid grey;
+         float: left;
+         width: 80%;
+         background: #f1f1f1;
+         }
+         form.example button {
+         float: left;
+         width: 20%;
+         padding: 10px;
+         background: #0078b4;
+         color: white;
+         font-size: 30px;
+         border: 1px solid grey;
+         border-left: none;
+         cursor: pointer;
+         }
+         form.example button:hover {
+         background: #0089d0;
+         }
+         form.example::after {
+         content: "";
+         clear: both;
+         display: table;
+         }
+      </style>
+      <script src="./assets/moviedisplay.js"></script>
+      <script src="./assets/movieD.js"></script> 
+      <script src="./assets/custom-cart-element.js"></script>
+      <script src="./assets/search-element.js"></script>
+   </head>
+   <body style="background-color: #0b0d0f !important;">
+      <movie-search id="searchid"></movie-search>
+      <div class="row">
+         <div class="col-md-2">
+         </div>
+         <div class="col-md-8">
+            <form class="example mb-4">
+               <input type="text" placeholder="Search for a movie" name="search" id="param" style="background-color: #212326 !important; color: gray !important; border: none !important; margin-top: 30px; height: 80px; border-radius: 3px; display: block;
+                  margin-left: auto; margin-right: auto; text-align:left; font-size: 2.0em; padding-left: 15px; font-family: Montserrat,sans-serif;">
+               <button type="button" onclick="getSearchParam();" style="height: 80px;margin-top: 30px;"><i class="fa fa-search"></i></button>
+            </form>
+         </div>
+         <div class="col-md-2">
+         </div>
+      </div>
+      <div class="row">
+         <div class="col-md-9">
+            <div class="display" style="margin-top: 30px; margin-bottom: 50px;">
+               <app-moviedisplay id="custommoviedisplay"></app-moviedisplay>
+            </div>
+            <div class="details"style="margin-top: 30px; margin-bottom: 50px;">
+               <movie-details id="details"></movie-details>
+            </div>
+         </div>
+         <div class="col-md-3">
+            <div class="cart" style="margin-top: 30px; margin-bottom: 50px;">
+               <app-cart id="cartItem"></app-cart>
+            </div>
+         </div>
+      </div>
+      <script>
+         function getSearchParam() {
+           document.getElementById('searchid').searchparam = getTextBoxValue('param');
+         }
+         function getTextBoxValue(textBoxId) {
+           return document.getElementById(textBoxId).value;
+         }
+      </script>
+      <script>
+         const search=document.querySelector('movie-search');
+         search.addEventListener('serachresult',(event)=>{
+           var i=0;
+         while(i<event.detail.length){
+           console.log(`"Search element" emitted: ${event.detail[i].title}`);
+           document.getElementById("custommoviedisplay").searchedmovies=event.detail;
+            i++;
+         }
+         });
+         
+         const moviedisplay = document.querySelector('app-moviedisplay');
+         moviedisplay.addEventListener('result',(event) =>{
+           console.log(`"Movie Display event" emitted: ${event.detail.title}`);
+           document.getElementById('details').movie = event.detail.id;
+         });
+         
+      </script>
+      <script>
+         var objectMovies = {"id":"299536","title":"Avengers"};
+          document.getElementById('details').movie = {"id":"299536","title":"Avengers"};
+         const element = document.querySelector('movie-details');
+         element.addEventListener('movieEvent',(event) =>{
+                console.log(`${event.detail}`);
+               document.getElementById('cartItem').item=event.detail
+              });
+         const cart=document.querySelector('app-cart');
+         cart.addEventListener('cartItem',(event)=>{
+           console.log(`${event.detail}`);
+           
+         })
+         function reload(){
+           var container=document.getElementById('custommoviedisplay');
+           var content=container.innerHTML;
+           container.innerHTML=content;
+           console.log("Refreshed");
+         }
+      </script>
+   </body>
+</html>
