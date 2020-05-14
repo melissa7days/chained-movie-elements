@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en" style="overflow-x: hidden;">
+   <head>
+      <meta charset="utf-8">
+      <title>MovieComponent</title>
+      <base href="">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="icon" type="image/x-icon" href="favicon.ico">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+      <link rel="stylesheet" href="./assets/style.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+      <style>
+         @import url('https://fonts.googleapis.com/css?family=Oswald&display=swap');
+         @import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
+         * {
+         box-sizing: border-box;
+         }
+         form.example input[type=text] {
+         padding: 10px;
+         font-size: 17px;
+         border: 1px solid grey;
+         float: left;
+         width: 80%;
+         background: #f1f1f1;
+         }
+         form.example button {
+         float: left;
+         width: 20%;
+         padding: 10px;
+         background: #0078b4;
+         color: white;
+         font-size: 30px;
+         border: 1px solid grey;
+         border-left: none;
+         cursor: pointer;
+         }
+         form.example button:hover {
+         background: #0089d0;
+         }
+         form.example::after {
+         content: "";
+         clear: both;
+         display: table;
+         }
+          mat-dialog-container{
+           background-color:#212326!important;
+           border-radius: 20px!important;
+         }
+         /* width */
+         ::-webkit-scrollbar {
+             width: 10px;
+
+           }
+
+         /* Track */
+         ::-webkit-scrollbar-track {
+             background-color: #2b2b2b;
+             border-radius: 10px;
+           }
+
+         /* Handle */
+         ::-webkit-scrollbar-thumb {
+             background: #888; 
+             border-radius: 10px;
+           }
+
+         /* Handle on hover */
+         ::-webkit-scrollbar-thumb:hover {
+             background: #555; 
+             border-radius: 10px;
+           }
+      </style>
+        <script
+        src="https://www.paypal.com/sdk/js?client-id=AVyRBPdePhrZK3EtdD4FS9hRe02N4zhP_Y7s9oihcacCMBSjE5XcuE3jSlFNTLAa0fVRYYVVMi-G6IC_">
+      </script>
+      <script src="./assets/payment-element.js"></script>
+       <script src="./assets/movieDetails.js"></script>
+      <script src="./assets/moviedisplay.js"></script>
+      <script src="./assets/custom-cart-element.js"></script>
+      <script src="./assets/search-element.js"></script>
+      
+      
+   </head>
+   <body style="background-color: #0b0d0f !important;">
+      <movie-search id="searchid"></movie-search>
+      <div class="row">
+         <div class="col-md-2">
+         </div>
+         <div class="col-md-8">
+            <form class="example mb-4">
+               <input type="text" placeholder="Search for a movie" name="search" id="param" style="background-color: #212326 !important; color: gray !important; border: none !important; margin-top: 30px; height: 80px; border-radius: 3px; display: block;
+                  margin-left: auto; margin-right: auto; text-align:left; font-size: 2.0em; padding-left: 15px; font-family: Montserrat,sans-serif;">
+               <button type="button" onclick="getSearchParam();" style="height: 80px;margin-top: 30px;"><i class="fa fa-search"></i></button>
+            </form>
+         </div>
+         <div class="col-md-2">
+         </div>
+      </div>
+      <div class="row" style="background-color: #0b0d0f;">
+         <div class="col-md-9">
+            <div class="display" style="margin-top: 30px; margin-bottom: 50px;">
+               <app-moviedisplay id="custommoviedisplay"></app-moviedisplay>
+            </div>
+            
+         </div>
+         <div class="col-md-3" style="padding-right: 40px;">
+            <div class="cart" style="margin-top: 30px; margin-bottom: 80px;">
+               <app-cart id="cartItem"></app-cart>
+               <div id="checkout">
+                  <button type="button" onclick="pay();" style="font-family: Montserrat,sans-serif; border: 1px solid #28a745; background-color: #28a745; margin-left: 15px; margin-top: 10px; color: #fff; font-size: 8px; min-width: 90% !important;" class="btn btn-outline-secondary mt-2">Checkout</button>
+               </div>
+               <div id="payment" style="display: none;">
+                  <custom-payment id="paymentid"></custom-payment>
+               </div>
+            </div>
+         </div>
+      </div>
+
+      <div class="mat-app-background basic-container">
+         <dialog-content-example id="details"></dialog-content-example>
+       </div>
+
+      <script>
+         function getSearchParam() {
+           document.getElementById('searchid').searchparam = getTextBoxValue('param');
+         }
+         function getTextBoxValue(textBoxId) {
+           return document.getElementById(textBoxId).value;
+         }
+      </script>
+      <script>
+         const search=document.querySelector('movie-search');
+         search.addEventListener('serachresult',(event)=>{
+           var i=0;
+         while(i<event.detail.length){
+           console.log(`"Search element" emitted: ${event.detail[i].title}`);
+           document.getElementById("custommoviedisplay").searchedmovies=event.detail;
+            i++;
+         }
+         });
+         
+         const moviedisplay = document.querySelector('app-moviedisplay');
+         moviedisplay.addEventListener('result',(event) =>{
+           console.log(`"Movie Display event" emitted: ${event.detail.title}`);
+           document.getElementById('details').movie = event.detail.id;
+           const Display = document.querySelector('dialog-content-example');
+           var contentx = Display.shadowRoot;
+           contentx.getElementById('testBtn').click();
+           const movieDetails = document.querySelector('dialog-content-example-dialog');
+           movieDetails.shadowRoot.getElementById('movietitle').innerText = event.detail.title;
+         });
+         const elementx = document.querySelector('dialog-content-example');
+         if(elementx!=null )
+         {
+           elementx.addEventListener('movieEvent',(event) =>{
+           console.log(` event for cart: ${event.detail}`);;
+           document.getElementById('cartItem').item=event.detail;
+         });
+         }
+         
+      </script>
+
+
+      <script>
+         var carttotal=0;
+         $('#checkout').hide();
+
+         const cart=document.querySelector('app-cart');
+         cart.addEventListener('TotalAmount',(event)=>{
+           console.log(`"cart" emitted: ${event.detail}`);
+           carttotal=event.detail;
+            checkout();
+         });
+         function checkout(){
+         if(carttotal > 0) {
+            $('#checkout').show();
+            console.log(carttotal);
+            x.style.display = "block";
+         }
+         else{
+            $('#checkout').hide();
+            x.style.display = "none";
+         }
+         }
+
+         const payment=document.querySelector('custom-payment');
+         payment.addEventListener('result',(event)=>{
+            console.log(`"payment " emitted: ${event.detail}`);
+         })
+         function pay(){
+            document.getElementById('paymentid').amount=carttotal;
+            payshowhide();
+         }
+         function payshowhide(){
+            var x = document.getElementById("payment");
+            if (x.style.display === "none") {
+               x.style.display = "block";
+            } else {
+               x.style.display = "none";
+            }
+         }
+         function reload(){
+           var container=document.getElementById('custommoviedisplay');
+           var content=container.innerHTML;
+           container.innerHTML=content;
+           console.log("Refreshed");
+         }
+      </script>
+
+   </body>
+</html> 
