@@ -108,12 +108,12 @@
          <div class="col-md-3" style="padding-right: 40px;">
             <div class="cart" style="margin-top: 30px; margin-bottom: 80px;">
                <app-cart id="cartItem"></app-cart>
-               <div id="checkout">
+<!--                <div id="checkout">
                   <button type="button" onclick="pay();" style="font-family: Montserrat,sans-serif; border: 1px solid #28a745; background-color: #28a745; margin-left: 15px; margin-top: 10px; color: #fff; font-size: 8px; min-width: 90% !important;" class="btn btn-outline-secondary mt-2">Checkout</button>
                </div>
                <div id="payment" style="display: none;">
                   <custom-payment id="paymentid"></custom-payment>
-               </div>
+               </div> -->
             </div>
          </div>
       </div>
@@ -194,6 +194,9 @@
          function pay(){
             document.getElementById('paymentid').amount=carttotal;
             payshowhide();
+            if(amount > 0){
+               document.getElementById('paymentid').amount=carttotal;
+            }
          }
          function payshowhide(){
             var x = document.getElementById("payment");
