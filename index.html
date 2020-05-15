@@ -72,10 +72,10 @@
              border-radius: 10px;
            }
       </style>
-        <script
+<!--         <script
         src="https://www.paypal.com/sdk/js?client-id=AVyRBPdePhrZK3EtdD4FS9hRe02N4zhP_Y7s9oihcacCMBSjE5XcuE3jSlFNTLAa0fVRYYVVMi-G6IC_">
       </script>
-      <script src="./assets/payment-element.js"></script>
+      <script src="./assets/payment-element.js"></script> -->
        <script src="./assets/movieDetails.js"></script>
       <script src="./assets/moviedisplay.js"></script>
       <script src="./assets/custom-cart-element.js"></script>
@@ -168,15 +168,15 @@
 
       <script>
          var carttotal=0;
-         $('#checkout').hide();
+         // $('#checkout').hide();
 
          const cart=document.querySelector('app-cart');
          cart.addEventListener('TotalAmount',(event)=>{
            console.log(`"cart" emitted: ${event.detail}`);
            carttotal=event.detail;
-            checkout();
+            // checkout();
          });
-         function checkout(){
+/*          function checkout(){
          if(carttotal > 0) {
             $('#checkout').show();
             console.log(carttotal);
@@ -206,7 +206,7 @@
             } else {
                x.style.display = "none";
             }
-         }
+         } */
          function reload(){
            var container=document.getElementById('custommoviedisplay');
            var content=container.innerHTML;
